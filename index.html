@@ -1,4 +1,4 @@
-<title>BIG Roster 2026 — Prototipo</title>
+<title>BIG Roster 2026</title>
 <style>
 
 @font-face {
@@ -35,8 +35,6 @@
 
 :root {
   --azul: #33419A;
-  --azul-2: #4C5AB8;
-  --azul-dark: #262F73;
   --naranja: #F36F2C;
   --fondo: #F7D8BD;
   --lima: #E8F29C;
@@ -55,17 +53,9 @@ body {
 }
 
 .page-flow { position: relative; }
-/* the curve only exists below the hero: .below-hero wraps everything that
-   comes after the portada photo, and .bg-fondo is scoped to it instead of
-   the whole page, so the SVG has nothing to run under while the hero photo
-   is on screen and only starts the moment the hero ends. */
 .below-hero { position: relative; }
-.bg-fondo {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
-}
-.bg-fondo svg {
-  position: absolute; top: -5%; left: -5%; width: 110%; height: 110%; display: block;
-}
+.bg-fondo { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bg-fondo svg { position: absolute; top: -5%; left: -5%; width: 110%; height: 110%; display: block; }
 
 /* ---------- NAV ---------- */
 .nav {
@@ -75,15 +65,11 @@ body {
 }
 .nav-brand {
   display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; border: none;
-  background: var(--naranja); border-radius: 12px; padding: 9px; /* solid chip so the white mark stays visible over both the hero and the peach body */
+  background: var(--naranja); border-radius: 12px; padding: 9px;
   transition: background .25s ease;
 }
 .nav-brand:hover { background: var(--azul); }
-.tabs {
-  position: relative; display: flex; gap: 4px;
-  overflow-x: auto; scrollbar-width: none; max-width: 74vw;
-}
-.tabs::-webkit-scrollbar { display: none; }
+.tabs { position: relative; display: flex; gap: 4px; }
 .tab-pill {
   position: absolute; top: 4px; height: calc(100% - 8px);
   border-radius: 999px; background: var(--naranja);
@@ -95,7 +81,7 @@ body {
 .tab {
   position: relative; z-index: 1;
   background: var(--fondo); cursor: pointer; border-radius: 999px;
-  border: 1.5px solid var(--naranja); /* solid peach chip, always readable regardless of what's behind the nav */
+  border: 1.5px solid var(--naranja);
   font-family: inherit; font-size: 12.5px; font-weight: 600;
   letter-spacing: .02em; text-transform: uppercase;
   color: var(--naranja);
@@ -106,23 +92,18 @@ body {
   background: var(--naranja); color: var(--blanco); border-color: transparent; font-weight: 800;
 }
 
-/* visible keyboard-focus ring, consistent across every interactive control */
-.tab:focus-visible, .nav-brand:focus-visible, .stat:focus-visible,
-.rail-arrow:focus-visible, .rail:focus-visible, .scroll-cue:focus-visible {
+.tab:focus-visible, .nav-brand:focus-visible, .rail-arrow:focus-visible, .rail:focus-visible, .scroll-cue:focus-visible {
   outline: 2px solid var(--lima); outline-offset: 3px;
 }
 
-/* ---------- SECTION HEADS (shared) ---------- */
 .section-inner { position: relative; z-index: 1; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 32px; }
 
-/* ---------- PORTADA (hero module, no photo) ---------- */
+/* ---------- PORTADA ---------- */
 .portada {
   position: relative; min-height: 100vh; overflow: hidden;
   display: flex; align-items: center; padding: 140px 0 100px;
-  border-radius: 0 0 64px 64px; /* the hero is the whole top of the page; only its
-                                    bottom edge rounds off into the section below */
-  background: var(--naranja); /* the strong color owns the hero so it reads as its
-                                  own bold module against the peach body below it */
+  border-radius: 0 0 64px 64px;
+  background: var(--naranja);
   border-bottom: 2px solid var(--fondo);
 }
 .portada .section-inner { max-width: 900px; }
@@ -152,7 +133,6 @@ body {
 .scroll-cue .chev { display: block; animation: bounce 1.8s ease-in-out infinite; }
 @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 
-/* ---------- CATEGORY VIEWPORT (one tab visible at a time) ---------- */
 .cat-viewport { position: relative; }
 .category { display: none; }
 .category.active-cat { display: block; }
@@ -161,14 +141,8 @@ body {
 @keyframes catOut { to { opacity: 0; transform: translateX(-32px); } }
 @keyframes catIn { from { opacity: 0; transform: translateX(32px); } to { opacity: 1; transform: translateX(0); } }
 
-/* ---------- CATEGORY: cover ---------- */
-.cat-cover {
-  position: relative; min-height: 92vh; overflow: hidden;
-  display: flex; align-items: center; padding: 120px 0 80px;
-}
-.cat-cover .section-inner {
-  display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center;
-}
+.cat-cover { position: relative; min-height: 92vh; overflow: hidden; display: flex; align-items: center; padding: 120px 0 80px; }
+.cat-cover .section-inner { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; }
 .cat-cover h1 {
   color: var(--naranja);
   font-weight: 900; line-height: .85; letter-spacing: -0.07em; text-transform: uppercase;
@@ -182,19 +156,12 @@ body {
   opacity: 0; transform: translateY(18px);
   animation: riseIn .7s cubic-bezier(.16,1,.3,1) .38s forwards;
 }
-.cat-collage {
-  position: relative; height: 560px;
-  opacity: 0; animation: riseIn .9s cubic-bezier(.16,1,.3,1) .5s forwards;
-}
-.collage-tile {
-  position: absolute; display: block; border-radius: 32px;
-  width: auto; height: auto; object-fit: cover; object-position: center;
-}
+.cat-collage { position: relative; height: 560px; opacity: 0; animation: riseIn .9s cubic-bezier(.16,1,.3,1) .5s forwards; }
+.collage-tile { position: absolute; display: block; border-radius: 32px; width: auto; height: auto; object-fit: cover; object-position: center; }
 .ct-1 { width: 46%; height: 46%; left: 0; top: 4%; }
 .ct-2 { width: 46%; height: 34%; left: 0; bottom: 2%; }
 .ct-3 { width: 44%; height: 88%; right: 0; top: 8%; }
 
-/* ---------- CATEGORY: rail ---------- */
 .cat-rail { position: relative; overflow: hidden; padding: 40px 0 120px; }
 .rail-head {
   position: relative; z-index: 1;
@@ -207,53 +174,18 @@ body {
 .rail-wrap { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }
 .rail {
   display: flex; gap: 26px; overflow-x: auto; scroll-snap-type: x proximity;
-  padding: 10px 32px 28px; cursor: grab; user-select: none;
-  scrollbar-width: none;
+  padding: 10px 32px 28px; cursor: grab; user-select: none; scrollbar-width: none;
 }
 .rail::-webkit-scrollbar { display: none; }
 .rail.dragging { cursor: grabbing; scroll-snap-type: none; }
 
-.card { flex: 0 0 250px; scroll-snap-align: start; }
-.card-photo {
-  display: block; width: 250px; height: 250px; border-radius: 25px;
-  object-fit: cover; object-position: center top;
-  pointer-events: none; background: #d9d9d9; /* placeholder tone while the lazy image loads in */
-}
-.card-body {
-  background: #EEE; border-radius: 20px; padding: 20px;
-  margin-top: -34px; position: relative; z-index: 1;
-  display: flex; flex-direction: column; gap: 14px;
-  pointer-events: none;
-}
-.card-name { color: var(--azul); font-size: 26px; font-weight: 700; letter-spacing: -0.035em; line-height: 1.08; }
-.chip-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.chip {
-  background: var(--blanco); color: var(--azul); font-size: 11px; font-weight: 600;
-  padding: 5px 10px; border-radius: 8px; letter-spacing: -0.01em;
-}
-.stat-row { display: flex; gap: 8px; }
-.stat {
-  flex: 1; background: var(--naranja); border-radius: 12px; padding: 10px 12px;
-  text-decoration: none; color: inherit; pointer-events: auto;
-  transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
-}
-.stat:hover {
-  background: #F58C56; transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(243,111,44,.35);
-}
-.stat-label { display: block; color: var(--blanco); font-size: 10.5px; font-weight: 500; letter-spacing: -0.01em; }
-.stat-value { display: block; color: var(--blanco); font-size: 18px; font-weight: 700; letter-spacing: -0.03em; margin-top: 1px; }
-
-/* ---------- TARJETA TALENTO — CLEAN BLUR (Figma node 86:359) — mujeres, current ---------- */
+/* ---------- TARJETA TALENTO — CLEAN BLUR (Figma node 86:359) ---------- */
 .bcard {
   flex: 0 0 307px; scroll-snap-align: start; position: relative;
   height: 527px; border-radius: 32px; overflow: hidden; background: #d9d9d9;
   transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s cubic-bezier(.16,1,.3,1);
 }
-.bcard:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 22px 44px rgba(13,13,23,.28);
-}
+.bcard:hover { transform: translateY(-6px); box-shadow: 0 22px 44px rgba(13,13,23,.28); }
 .bcard-photo {
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center top; pointer-events: none;
@@ -264,10 +196,7 @@ body {
   position: absolute; top: 0; left: 0; right: 0; height: 170px; pointer-events: none;
   background: linear-gradient(to bottom, rgba(13,13,23,.78), rgba(13,13,23,0));
 }
-.bcard-top {
-  position: absolute; top: 26px; left: 24px; right: 24px; pointer-events: none;
-  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
-}
+.bcard-top { position: absolute; top: 26px; left: 24px; right: 24px; pointer-events: none; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .bcard-name { color: var(--blanco); font-size: 28px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; }
 .bcard-pill {
   display: inline-flex; align-items: center; padding: 6px 12px; border-radius: 999px;
@@ -294,72 +223,6 @@ body {
 }
 .bcard-btn:hover { background: #F58C56; transform: translateY(-2px); }
 
-/* ---------- TARJETA TALENTO — DARK (Figma node 89:242) — mujeres only, trial run ---------- */
-.tcard {
-  flex: 0 0 300px; scroll-snap-align: start;
-  display: flex; flex-direction: column; gap: 18px;
-  background: var(--azul); border-radius: 32px; padding: 16px;
-}
-.tcard-photo {
-  display: block; width: 268px; height: 300px; border-radius: 22px;
-  object-fit: cover; object-position: center top; pointer-events: none;
-  background: #d9d9d9;
-}
-.tcard-body { display: flex; flex-direction: column; gap: 6px; }
-.tcard-name-row { display: flex; align-items: center; gap: 6px; }
-.tcard-name { color: var(--fondo); font-size: 28px; font-weight: 900; letter-spacing: -0.05em; line-height: 1; }
-.tcard-badge {
-  width: 18px; height: 18px; border-radius: 50%; background: var(--lima);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  color: var(--azul); font-size: 11px; font-weight: 900;
-}
-.tcard-subtitle { color: var(--fondo); opacity: .65; font-size: 13px; line-height: 1.35; }
-.tcard-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
-.tcard-stats { display: flex; align-items: center; gap: 10px; }
-.tcard-stat {
-  display: flex; align-items: center; gap: 4px; text-decoration: none;
-  color: var(--fondo); font-size: 13px; font-weight: 700; letter-spacing: -0.03em;
-}
-.tcard-stat svg { display: block; flex-shrink: 0; }
-.tcard-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: var(--naranja); color: var(--fondo); font-weight: 700; font-size: 12.5px;
-  padding: 10px 16px; border-radius: 999px; text-decoration: none; white-space: nowrap;
-  transition: background .2s ease, transform .2s ease;
-}
-.tcard-btn:hover { background: #F58C56; transform: translateY(-2px); }
-
-/* ---------- TARJETA PRINCIPAL (Figma node 49:125) — trends only, trial run ---------- */
-.category[data-slug="trends"] .card {
-  flex-basis: 280px;
-  border: 5px solid var(--naranja);
-  border-radius: 25px;
-  overflow: hidden;
-}
-.category[data-slug="trends"] .card-photo {
-  width: 280px; height: 280px; border-radius: 0;
-}
-.category[data-slug="trends"] .card-body {
-  background: var(--naranja); border-radius: 24px; margin-top: -39px; gap: 16px;
-}
-.category[data-slug="trends"] .card-name {
-  color: var(--fondo); font-size: 32px; letter-spacing: -0.09em; line-height: 1.1;
-}
-.category[data-slug="trends"] .chip {
-  background: var(--naranja); color: var(--fondo); font-weight: 500;
-  font-size: 12px; padding: 6px 12px; letter-spacing: -0.05em;
-  border: 1px solid var(--fondo);
-}
-.category[data-slug="trends"] .stat {
-  background: var(--fondo); border: 1px solid var(--fondo); padding: 12px 14px;
-}
-.category[data-slug="trends"] .stat-row a:nth-child(2) { border-color: var(--naranja); }
-.category[data-slug="trends"] .stat-label,
-.category[data-slug="trends"] .stat-value { color: var(--naranja); }
-.category[data-slug="trends"] .stat:hover { background: var(--naranja); box-shadow: none; }
-.category[data-slug="trends"] .stat:hover .stat-label,
-.category[data-slug="trends"] .stat:hover .stat-value { color: var(--fondo); }
-
 .rail-arrow {
   position: absolute; top: 42%; transform: translateY(-50%);
   width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer;
@@ -376,19 +239,9 @@ body {
 .progress-bar { height: 3px; background: rgba(51,65,154,.18); border-radius: 3px; overflow: hidden; }
 .progress-fill { height: 100%; width: 25%; background: var(--naranja); border-radius: 3px; transition: width .1s linear; }
 
-.toast {
-  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
-  background: var(--blanco); color: var(--negro); font-size: 13px; font-weight: 600;
-  padding: 12px 20px; border-radius: 999px; box-shadow: 0 14px 30px rgba(13,13,20,.4);
-  opacity: 0; pointer-events: none; transition: opacity .3s ease, transform .3s ease;
-  z-index: 200;
-}
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
 @media (max-width: 860px) {
   .cat-cover .section-inner { grid-template-columns: 1fr; }
   .cat-collage { height: 320px; order: -1; }
-  .tabs { max-width: 56vw; }
   .portada { border-radius: 0 0 32px 32px; }
 }
 
@@ -410,15 +263,6 @@ body {
       <div class="tab-pill" id="tabPill"></div>
       <button class="tab" data-cat="Mujeres">Mujeres</button>
 <button class="tab" data-cat="Hombres">Hombres</button>
-<button class="tab" data-cat="Lifestyle">Lifestyle</button>
-<button class="tab" data-cat="Beauty & Makeup">Beauty & Makeup</button>
-<button class="tab" data-cat="Trends">Trends</button>
-<button class="tab" data-cat="Fitness">Fitness</button>
-<button class="tab" data-cat="Humor & Sketches">Humor & Sketches</button>
-<button class="tab" data-cat="Entretenimiento">Entretenimiento</button>
-<button class="tab" data-cat="Foodie">Foodie</button>
-<button class="tab" data-cat="Youtube">Youtube</button>
-<button class="tab" data-cat="Tecnología & Crypto">Tecnología & Crypto</button>
     </div>
   </nav>
 
@@ -437,7 +281,6 @@ body {
     <div class="bg-fondo" aria-hidden="true"><svg viewBox="0 0 1464 1080" preserveAspectRatio="xMidYMid slice">
 <path d="M5.82742 843.998L8.07747 831.373C53.3729 533.454 402.48 344.956 678.9 480.311C1111.55 654.031 1418.59 1085 1418.2 1573.77C1418.2 1590.85 1422.02 1607.93 1430.92 1622.51C1475.09 1694.93 1601.68 1680.84 1624.97 1596.57C1628.93 1582.28 1628.98 1567.21 1626.24 1552.68C1518.92 975.927 1075.8 485.449 532.399 276.593C528.926 275.076 525.502 273.461 522.127 271.7C267.523 120.734 350.141 -311.022 647.105 -352.324C667.258 -356.043 687.949 -358 709.129 -358H2009V1924H1.08264C4.65345 1879.08 -6.15679 908.592 5.82742 844.047V843.998Z" fill="black" fill-opacity="0.07"/>
 </svg></div>
-
     <div class="cat-viewport" id="catViewport">
 
   <section class="category active-cat" data-cat="Mujeres" data-slug="mujeres" id="cat-mujeres">
@@ -476,7 +319,7 @@ body {
             <span class="bcard-role">Humor · Sketch · Fitness</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Juli Savioli">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/julisavioli/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:1">
@@ -494,7 +337,7 @@ body {
             <span class="bcard-role">Humor · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Pía Scarnato">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/piascarnato/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:2">
@@ -512,7 +355,7 @@ body {
             <span class="bcard-role">Humor · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Dulce Pink">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/_dulcepink_/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:3">
@@ -530,7 +373,7 @@ body {
             <span class="bcard-role">Humor · Sketch</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Renata Blasevich">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/renatablasevich/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:4">
@@ -548,7 +391,7 @@ body {
             <span class="bcard-role">Humor · Sketch</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Giuli Bellicoso">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/giuli.bellicoso/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:5">
@@ -566,7 +409,7 @@ body {
             <span class="bcard-role">Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Pauli Veltrano">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/paulivetrano/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:6">
@@ -584,7 +427,7 @@ body {
             <span class="bcard-role">Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn" href="mediakit.html?id=agustina_cambra">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/agusfc_/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:7">
@@ -602,7 +445,7 @@ body {
             <span class="bcard-role">Cocina · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Eve Vidal">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/evecocinaybienestar/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:8">
@@ -620,7 +463,7 @@ body {
             <span class="bcard-role">Humor · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Inez">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/inezzzzzita/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:9">
@@ -638,7 +481,7 @@ body {
             <span class="bcard-role">Humor · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Mumy">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/mumyratibel/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:10">
@@ -656,7 +499,7 @@ body {
             <span class="bcard-role">Humor · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Giuli Lourdes">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/giulilourdes/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:11">
@@ -674,7 +517,7 @@ body {
             <span class="bcard-role">Humor · Sketch</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Mely Francano">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/melyfrancanoo/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:12">
@@ -692,7 +535,7 @@ body {
             <span class="bcard-role">Trend · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Martu Morales">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/martuumoraless/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:13">
@@ -710,7 +553,7 @@ body {
             <span class="bcard-role">Humor · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Nanu Yael">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/nanu.yael/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:14">
@@ -728,7 +571,7 @@ body {
             <span class="bcard-role">Humor · Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Sabri Ludmila">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/sabrinaludmila_/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
     <article class="bcard" style="--i:15">
@@ -746,7 +589,7 @@ body {
             <span class="bcard-role">Lifestyle</span>
           </div>
         </div>
-        <a class="bcard-btn bcard-btn-toast" href="#" data-name="Yo Soy Brisa">Ver más</a>
+        <a class="bcard-btn" href="https://www.instagram.com/yosoybrisaa/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
         </div>
@@ -757,102 +600,403 @@ body {
     </div>
   </section>
 
-  <section class="category" data-cat="Trends" data-slug="trends" id="cat-trends">
+  <section class="category" data-cat="Hombres" data-slug="hombres" id="cat-hombres">
     <div class="cat-cover">
       <div class="section-inner">
         <div>
-          <h1>Trends</h1>
-          <p>Contenido que se mueve rápido: humor, moda y cultura pop, directo al feed de audiencias que marcan tendencia.</p>
+          <h1>Hombres</h1>
+          <p>Carisma, humor y personalidad — los creadores que más conectan con audiencias masivas en cada plataforma.</p>
         </div>
         <div class="cat-collage">
-          <img class="collage-tile ct-1" src="assets/photos/pia_scarnato.webp" alt="Pía Scarnato" loading="lazy" decoding="async"><img class="collage-tile ct-2" src="assets/photos/giuli_lourdes.webp" alt="Giuli Lourdes" loading="lazy" decoding="async"><img class="collage-tile ct-3" src="assets/photos/martu_morales.webp" alt="Martu Morales" loading="lazy" decoding="async">
+          <img class="collage-tile ct-1" src="assets/photos/pelao_khe_collage.webp" alt="Pelao Khe" loading="lazy" decoding="async"><img class="collage-tile ct-2" src="assets/photos/pablo_bruschi_collage.webp" alt="Pablo Bruschi" loading="lazy" decoding="async"><img class="collage-tile ct-3" src="assets/photos/benja_calero_collage.webp" alt="Benja Calero" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
     <div class="cat-rail">
       <div class="rail-head">
-        <div class="rail-eyebrow">7 creadores en nuestro equipo</div>
+        <div class="rail-eyebrow">21 creadores en nuestro equipo</div>
       </div>
       <div class="rail-wrap">
         <button class="rail-arrow prev" aria-label="Anterior">‹</button>
         <button class="rail-arrow next" aria-label="Siguiente">›</button>
-        <div class="rail" tabindex="0" role="region" aria-label="Creadores de Trends, deslizar con las flechas del teclado">
+        <div class="rail" tabindex="0" role="region" aria-label="Creadores de Hombres, deslizar con las flechas del teclado">
           
-    <article class="card" style="--i:0">
-      <img class="card-photo" src="assets/photos/pia_scarnato.webp" alt="Pía Scarnato" loading="lazy" decoding="async" width="250" height="250">
-      <div class="card-body">
-        <h3 class="card-name">Pía Scarnato</h3>
-        <div class="chip-row"><span class="chip">Humor</span><span class="chip">Lifestyle</span></div>
-        <div class="stat-row">
-          <a class="stat" href="https://www.instagram.com/piascarnato/" target="_blank" rel="noopener"><span class="stat-label">Instagram</span><span class="stat-value">1.1 M</span></a>
-          <a class="stat" href="https://www.tiktok.com/@piascarnato.ok" target="_blank" rel="noopener"><span class="stat-label">TikTok</span><span class="stat-value">2.1 M</span></a>
+    <article class="bcard" style="--i:0">
+      <img class="bcard-photo" src="assets/photos/pelao_khe.webp" alt="Pelao Khe" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Pelao Khe</h3>
+        <span class="bcard-pill">5.6 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/pelao_khe.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@pelao.khe</span>
+            <span class="bcard-role">Humor · Sketch</span>
+          </div>
         </div>
+        <a class="bcard-btn" href="https://www.instagram.com/pelao.khe/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
-    <article class="card" style="--i:1">
-      <img class="card-photo" src="assets/photos/dulce_pink.webp" alt="Dulce Pink" loading="lazy" decoding="async" width="250" height="250">
-      <div class="card-body">
-        <h3 class="card-name">Dulce Pink</h3>
-        <div class="chip-row"><span class="chip">Humor</span><span class="chip">Lifestyle</span></div>
-        <div class="stat-row">
-          <a class="stat" href="https://www.instagram.com/_dulcepink_/" target="_blank" rel="noopener"><span class="stat-label">Instagram</span><span class="stat-value">1 M</span></a>
-          <a class="stat" href="https://www.tiktok.com/@_dulcepink_" target="_blank" rel="noopener"><span class="stat-label">TikTok</span><span class="stat-value">2.5 M</span></a>
+    <article class="bcard" style="--i:1">
+      <img class="bcard-photo" src="assets/photos/benja_calero.webp" alt="Benja Calero" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Benja Calero</h3>
+        <span class="bcard-pill">6.2 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/benja_calero.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@benjacalero01</span>
+            <span class="bcard-role">Humor · Youtuber</span>
+          </div>
         </div>
+        <a class="bcard-btn" href="https://www.instagram.com/benjacalero01/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
-    <article class="card" style="--i:2">
-      <img class="card-photo" src="assets/photos/giuli_bellicoso.webp" alt="Giuli Bellicoso" loading="lazy" decoding="async" width="250" height="250">
-      <div class="card-body">
-        <h3 class="card-name">Giuli Bellicoso</h3>
-        <div class="chip-row"><span class="chip">Humor</span><span class="chip">Sketch</span></div>
-        <div class="stat-row">
-          <a class="stat" href="https://www.instagram.com/giuli.bellicoso/" target="_blank" rel="noopener"><span class="stat-label">Instagram</span><span class="stat-value">252 K</span></a>
-          <a class="stat" href="https://www.tiktok.com/@giuli.bellicoso" target="_blank" rel="noopener"><span class="stat-label">TikTok</span><span class="stat-value">748 K</span></a>
+    <article class="bcard" style="--i:2">
+      <img class="bcard-photo" src="assets/photos/tiago_bergallo.webp" alt="Tiago Bergallo" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Tiago Bergallo</h3>
+        <span class="bcard-pill">616 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/tiago_bergallo.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@tiagobergallo</span>
+            <span class="bcard-role">Humor · Trends</span>
+          </div>
         </div>
+        <a class="bcard-btn" href="https://www.instagram.com/tiagobergallo/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
-    <article class="card" style="--i:3">
-      <img class="card-photo" src="assets/photos/giuli_lourdes.webp" alt="Giuli Lourdes" loading="lazy" decoding="async" width="250" height="250">
-      <div class="card-body">
-        <h3 class="card-name">Giuli Lourdes</h3>
-        <div class="chip-row"><span class="chip">Humor</span><span class="chip">Lifestyle</span></div>
-        <div class="stat-row">
-          <a class="stat" href="https://www.instagram.com/giulilourdes/" target="_blank" rel="noopener"><span class="stat-label">Instagram</span><span class="stat-value">316 K</span></a>
-          <a class="stat" href="https://www.tiktok.com/@giulianalourdes" target="_blank" rel="noopener"><span class="stat-label">TikTok</span><span class="stat-value">872 K</span></a>
+    <article class="bcard" style="--i:3">
+      <img class="bcard-photo" src="assets/photos/cris_pierri.webp" alt="Cris Pierri" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Cris Pierri</h3>
+        <span class="bcard-pill">3.3 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/cris_pierri.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@crispierri</span>
+            <span class="bcard-role">Humor · Sketch</span>
+          </div>
         </div>
+        <a class="bcard-btn" href="https://www.instagram.com/crispierri/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
-    <article class="card" style="--i:4">
-      <img class="card-photo" src="assets/photos/mely_francano.webp" alt="Mely Francano" loading="lazy" decoding="async" width="250" height="250">
-      <div class="card-body">
-        <h3 class="card-name">Mely Francano</h3>
-        <div class="chip-row"><span class="chip">Humor</span><span class="chip">Sketch</span></div>
-        <div class="stat-row">
-          <a class="stat" href="https://www.instagram.com/melyfrancanoo/" target="_blank" rel="noopener"><span class="stat-label">Instagram</span><span class="stat-value">154 K</span></a>
-          <a class="stat" href="https://www.tiktok.com/@melyfrancanoo" target="_blank" rel="noopener"><span class="stat-label">TikTok</span><span class="stat-value">434 K</span></a>
+    <article class="bcard" style="--i:4">
+      <img class="bcard-photo" src="assets/photos/hablemos_de_cine.webp" alt="Hablemos de Cine" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Hablemos de Cine</h3>
+        <span class="bcard-pill">845 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/hablemos_de_cine.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@hablemosdecinee_</span>
+            <span class="bcard-role">Cine</span>
+          </div>
         </div>
+        <a class="bcard-btn" href="https://www.instagram.com/hablemosdecinee_/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
-    <article class="card" style="--i:5">
-      <img class="card-photo" src="assets/photos/martu_morales.webp" alt="Martu Morales" loading="lazy" decoding="async" width="250" height="250">
-      <div class="card-body">
-        <h3 class="card-name">Martu Morales</h3>
-        <div class="chip-row"><span class="chip">Trend</span><span class="chip">Lifestyle</span></div>
-        <div class="stat-row">
-          <a class="stat" href="https://www.instagram.com/martuumoraless/" target="_blank" rel="noopener"><span class="stat-label">Instagram</span><span class="stat-value">2.3 M</span></a>
-          <a class="stat" href="https://www.tiktok.com/@martumoralesok" target="_blank" rel="noopener"><span class="stat-label">TikTok</span><span class="stat-value">7.2 M</span></a>
+    <article class="bcard" style="--i:5">
+      <img class="bcard-photo" src="assets/photos/ber_scarnato.webp" alt="Ber Scarnato" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Ber Scarnato</h3>
+        <span class="bcard-pill">742 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/ber_scarnato.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@berscarnato</span>
+            <span class="bcard-role">Humor · Sketch</span>
+          </div>
         </div>
+        <a class="bcard-btn" href="https://www.instagram.com/berscarnato/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
-    <article class="card" style="--i:6">
-      <img class="card-photo" src="assets/photos/tiago_bergallo.webp" alt="Tiago Bergallo" loading="lazy" decoding="async" width="250" height="250">
-      <div class="card-body">
-        <h3 class="card-name">Tiago Bergallo</h3>
-        <div class="chip-row"><span class="chip">Humor</span><span class="chip">Trends</span></div>
-        <div class="stat-row">
-          <a class="stat" href="https://www.instagram.com/tiagobergallo/" target="_blank" rel="noopener"><span class="stat-label">Instagram</span><span class="stat-value">141 K</span></a>
-          <a class="stat" href="https://www.tiktok.com/@tiagobergallo" target="_blank" rel="noopener"><span class="stat-label">TikTok</span><span class="stat-value">616 K</span></a>
+    <article class="bcard" style="--i:6">
+      <img class="bcard-photo" src="assets/photos/mariano_bondar.webp" alt="Mariano Bondar" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Mariano Bondar</h3>
+        <span class="bcard-pill">802 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/mariano_bondar.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@mariano_bondar</span>
+            <span class="bcard-role">Humor · Youtuber</span>
+          </div>
         </div>
+        <a class="bcard-btn" href="https://www.instagram.com/mariano_bondar/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:7">
+      <img class="bcard-photo" src="assets/photos/inachomer.webp" alt="Inachomer" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Inachomer</h3>
+        <span class="bcard-pill">3.1 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/inachomer.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@inachomer</span>
+            <span class="bcard-role">Humor · Entrevistas</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/inachomer/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:8">
+      <img class="bcard-photo" src="assets/photos/santi_gallo.webp" alt="Santi Gallo" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Santi Gallo</h3>
+        <span class="bcard-pill">668 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/santi_gallo.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@santigalloo</span>
+            <span class="bcard-role">Humor · Lifestyle</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/santigalloo/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:9">
+      <img class="bcard-photo" src="assets/photos/pablo_bruschi.webp" alt="Pablo Bruschi" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Pablo Bruschi</h3>
+        <span class="bcard-pill">15.2 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/pablo_bruschi.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@pablobruschi</span>
+            <span class="bcard-role">Humor · Youtuber</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/pablobruschi/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:10">
+      <img class="bcard-photo" src="assets/photos/joselo_marquez.webp" alt="Joselo Marquez" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Joselo Marquez</h3>
+        <span class="bcard-pill">946 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/joselo_marquez.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@joselomarquez</span>
+            <span class="bcard-role">Humor · Sketch</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/joselomarquez/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:11">
+      <img class="bcard-photo" src="assets/photos/bruno_rondini.webp" alt="Bruno Rondini" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Bruno Rondini</h3>
+        <span class="bcard-pill">127 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/bruno_rondini.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@brunorondini99</span>
+            <span class="bcard-role">Humor · Actor</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/brunorondini99/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:12">
+      <img class="bcard-photo" src="assets/photos/lubru_invierte.webp" alt="Lubru Invierte" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Lubru Invierte</h3>
+        <span class="bcard-pill">567 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/lubru_invierte.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@luchoocanovas</span>
+            <span class="bcard-role">Finanzas</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/luchoocanovas/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:13">
+      <img class="bcard-photo" src="assets/photos/los_arias_brothers.webp" alt="Los Arias Brothers" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Los Arias Brothers</h3>
+        <span class="bcard-pill">5.4 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/los_arias_brothers.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@losariasbrothers</span>
+            <span class="bcard-role">Humor · Sketch</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/losariasbrothers/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:14">
+      <img class="bcard-photo" src="assets/photos/facu_garcia.webp" alt="Facu Garcia" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Facu Garcia</h3>
+        <span class="bcard-pill">104 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/facu_garcia.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@facugarcia31</span>
+            <span class="bcard-role">F1 · Locutor</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/facugarcia31/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:15">
+      <img class="bcard-photo" src="assets/photos/lean_riccio.webp" alt="Lean Riccio" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Lean Riccio</h3>
+        <span class="bcard-pill">846 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/lean_riccio.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@lean.riccio</span>
+            <span class="bcard-role">Abogado</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/lean.riccio/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:16">
+      <img class="bcard-photo" src="assets/photos/tomas_alvarez.webp" alt="Tomas Alvarez" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Tomas Alvarez</h3>
+        <span class="bcard-pill">3 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/tomas_alvarez.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@tomas_alvarez_ok</span>
+            <span class="bcard-role">Humor · Sketch</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/tomas_alvarez_ok/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:17">
+      <img class="bcard-photo" src="assets/photos/el_capo_willy.webp" alt="El Capo Willy" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">El Capo Willy</h3>
+        <span class="bcard-pill">1.1 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/el_capo_willy.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@elcapowilly</span>
+            <span class="bcard-role">Humor · Sketch</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/elcapowilly/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:18">
+      <img class="bcard-photo" src="assets/photos/agus_benca.webp" alt="Agus Benca" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Agus Benca</h3>
+        <span class="bcard-pill">703 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/agus_benca.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@agusbencaa</span>
+            <span class="bcard-role">Humor · Bailarin</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/agusbencaa/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:19">
+      <img class="bcard-photo" src="assets/photos/lucas_monopoli.webp" alt="Lucas Monopoli" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Lucas Monopoli</h3>
+        <span class="bcard-pill">173 K seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/lucas_monopoli.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@lucasmonopoli</span>
+            <span class="bcard-role">Fitness</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/lucasmonopoli/" target="_blank" rel="noopener">Ver más</a>
+      </div>
+    </article>
+    <article class="bcard" style="--i:20">
+      <img class="bcard-photo" src="assets/photos/soy_dalto.webp" alt="Soy Dalto" loading="lazy" decoding="async" width="307" height="527">
+      <div class="bcard-top-scrim" aria-hidden="true"></div>
+      <div class="bcard-top">
+        <h3 class="bcard-name">Soy Dalto</h3>
+        <span class="bcard-pill">1.4 M seguidores</span>
+      </div>
+      <div class="bcard-bottom">
+        <div class="bcard-identity">
+          <img class="bcard-avatar" src="assets/photos/soy_dalto.webp" alt="" loading="lazy" decoding="async" width="34" height="34">
+          <div class="bcard-id-text">
+            <span class="bcard-handle">@soydalto</span>
+            <span class="bcard-role">Tecnología</span>
+          </div>
+        </div>
+        <a class="bcard-btn" href="https://www.instagram.com/soydalto/" target="_blank" rel="noopener">Ver más</a>
       </div>
     </article>
         </div>
@@ -866,10 +1010,7 @@ body {
   </div>
 </div>
 
-<div class="toast" id="toast">Esta vista todavía no está armada</div>
-
 <script>
-// --- nav pill: active state driven by scrollspy over .category sections ---
 const tabsEl = document.getElementById('tabs');
 const pill = document.getElementById('tabPill');
 const tabEls = Array.from(document.querySelectorAll('.tab'));
@@ -891,8 +1032,7 @@ function setActive(cat) {
   movePill(el);
 }
 
-// --- category tabs: only one .category is ever in the DOM flow at a time ---
-const SLUG_MAP = {"Mujeres": "mujeres", "Trends": "trends"};
+const SLUG_MAP = {"Mujeres": "mujeres", "Hombres": "hombres"};
 const catViewport = document.getElementById('catViewport');
 const catSections = {};
 document.querySelectorAll('.category').forEach(el => { catSections[el.dataset.slug] = el; });
@@ -919,32 +1059,12 @@ function showCategory(slug) {
   }, CAT_OUT_MS);
 }
 
-const toast = document.getElementById('toast');
-let toastTimer;
-
-document.querySelectorAll('.tcard-btn-toast, .bcard-btn-toast').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    toast.textContent = `El mediakit de ${btn.dataset.name} todavía no está armado`;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
-  });
-});
-
 tabEls.forEach(t => {
   t.addEventListener('mouseenter', () => movePill(t));
   t.addEventListener('click', () => {
     const slug = SLUG_MAP[t.dataset.cat];
-    if (slug) {
-      catViewport.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      showCategory(slug);
-      return;
-    }
-    toast.textContent = `"${t.dataset.cat}" todavía no está armada en este prototipo`;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+    catViewport.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showCategory(slug);
   });
 });
 tabsEl.addEventListener('mouseleave', () => movePill(currentActive ? tabEls.find(t => t.dataset.cat === currentActive) : null));
@@ -962,13 +1082,11 @@ viewportObserver.observe(catViewport);
 
 window.addEventListener('resize', () => movePill(currentActive ? tabEls.find(t => t.dataset.cat === currentActive) : null));
 
-// --- reveal on scroll (section headings only) ---
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('inview'); });
 }, { threshold: .2 });
 document.querySelectorAll('.rail-head').forEach(el => io.observe(el));
 
-// --- carousel: drag to scroll + progress (one instance per category) ---
 document.querySelectorAll('.cat-rail').forEach(catRail => {
   const rail = catRail.querySelector('.rail');
   const progressFill = catRail.querySelector('.progress-fill');
@@ -977,16 +1095,12 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {
 
   let isDown = false, startX = 0, startScroll = 0, moved = false, pendingDx = 0, rafScheduled = false;
   rail.addEventListener('pointerdown', (e) => {
-    if (e.target.closest('a')) return; // let real links click through, don't hijack via pointer capture
+    if (e.target.closest('a')) return;
     isDown = true; moved = false;
     rail.classList.add('dragging');
     startX = e.clientX; startScroll = rail.scrollLeft;
     rail.setPointerCapture(e.pointerId);
   });
-  // pointermove can fire far more often than the screen refreshes (high
-  // polling-rate mice/trackpads) — writing scrollLeft on every single event
-  // instead of once per animation frame was the main source of dropped
-  // frames while dragging.
   rail.addEventListener('pointermove', (e) => {
     if (!isDown) return;
     pendingDx = e.clientX - startX;
@@ -1004,10 +1118,6 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {
   );
   rail.addEventListener('click', (e) => { if (moved) e.preventDefault(); }, true);
 
-  // progress bar only — the earlier per-card scale-on-scroll "focus" effect
-  // was dropped: it forced a getBoundingClientRect/layout pass for every
-  // card on every scroll frame, for a purely decorative touch. Native
-  // scroll-snap already gives a smooth, GPU-only carousel without it.
   function updateProgress() {
     const max = rail.scrollWidth - rail.clientWidth;
     const pct = max > 0 ? (rail.scrollLeft / max) * 100 : 0;
@@ -1015,8 +1125,8 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {
   }
   rail.addEventListener('scroll', updateProgress);
 
-  prevBtn.addEventListener('click', () => rail.scrollBy({ left: -276, behavior: 'smooth' }));
-  nextBtn.addEventListener('click', () => rail.scrollBy({ left: 276, behavior: 'smooth' }));
+  prevBtn.addEventListener('click', () => rail.scrollBy({ left: -333, behavior: 'smooth' }));
+  nextBtn.addEventListener('click', () => rail.scrollBy({ left: 333, behavior: 'smooth' }));
 
   updateProgress();
 });

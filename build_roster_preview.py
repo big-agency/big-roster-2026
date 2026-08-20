@@ -145,7 +145,7 @@ def fondo_svg():
 sections_html = "\n".join(category_section(cat, active=(i == 0)) for i, cat in enumerate(SECTIONS))
 slug_map = json.dumps({cat["name"]: cat["slug"] for cat in SECTIONS})
 
-html = f'''<title>BIG Roster 2026 — Preview</title>
+html = f'''<title>BIG Roster 2026</title>
 <style>
 {font_faces}
 
@@ -523,7 +523,7 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {{
 </script>
 '''
 
-out_path = os.path.join(HERE, "roster_preview.html")
+out_path = os.path.join(HERE, "roster.html")
 with open(out_path, "w") as f:
     f.write(html)
 print("wrote", out_path, len(html) / 1024, "KB")
