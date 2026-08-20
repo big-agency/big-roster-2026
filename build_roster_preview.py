@@ -216,14 +216,13 @@ body {{
 
 /* ---------- PORTADA ---------- */
 .portada {{
-  position: relative; min-height: 100vh; overflow: hidden;
+  position: relative; min-height: 82vh; overflow: hidden;
   display: flex; align-items: center; padding: 140px 0 100px;
   border-radius: 0 0 64px 64px;
   background: var(--naranja);
   border-bottom: 2px solid var(--fondo);
 }}
 .portada .section-inner {{ max-width: 900px; }}
-.portada-logo {{ margin-bottom: 34px; opacity: 0; animation: riseIn .7s cubic-bezier(.16,1,.3,1) .05s forwards; }}
 .portada h1 {{
   color: var(--blanco);
   font-weight: 900; line-height: .85; letter-spacing: -0.07em; text-transform: uppercase;
@@ -383,12 +382,11 @@ body {{
 
   <section class="portada" id="portada">
     <div class="section-inner">
-      {isotipo_svg(52, "#FFFFFF", "portada-logo")}
       <h1>Roster<span class="lima">de Talentos</span></h1>
       <p>Creadores y creadoras que conectan marcas con audiencias reales, en cada categoría y en cada red.</p>
     </div>
     <button class="scroll-cue" onclick="document.getElementById('catViewport').scrollIntoView({{behavior:'smooth'}})">
-      Explorar por categoría <span class="chev">↓</span>
+      Explorar más <span class="chev">↓</span>
     </button>
   </section>
 

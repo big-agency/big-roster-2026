@@ -100,14 +100,13 @@ body {
 
 /* ---------- PORTADA ---------- */
 .portada {
-  position: relative; min-height: 100vh; overflow: hidden;
+  position: relative; min-height: 82vh; overflow: hidden;
   display: flex; align-items: center; padding: 140px 0 100px;
   border-radius: 0 0 64px 64px;
   background: var(--naranja);
   border-bottom: 2px solid var(--fondo);
 }
 .portada .section-inner { max-width: 900px; }
-.portada-logo { margin-bottom: 34px; opacity: 0; animation: riseIn .7s cubic-bezier(.16,1,.3,1) .05s forwards; }
 .portada h1 {
   color: var(--blanco);
   font-weight: 900; line-height: .85; letter-spacing: -0.07em; text-transform: uppercase;
@@ -268,12 +267,11 @@ body {
 
   <section class="portada" id="portada">
     <div class="section-inner">
-      <svg class="portada-logo" width="52" height="52" viewBox="0 0 410.71 466.33" style="color:#FFFFFF"><path fill="currentColor" d="M409.52,245.64l-.46-2.58c-9.26-60.88-80.63-99.4-137.14-71.74-88.45,35.5-151.22,123.57-151.14,223.45,0,3.49-.78,6.98-2.6,9.96-9.03,14.8-34.91,11.92-39.67-5.3-.81-2.92-.82-6-.26-8.97,21.94-117.86,112.53-218.09,223.62-260.77.71-.31,1.41-.64,2.1-1,52.05-30.85,35.16-119.08-25.55-127.52-4.12-.76-8.35-1.16-12.68-1.16H0v466.33h410.49c-.73-9.18,1.48-207.5-.97-220.69Z"/></svg>
       <h1>Roster<span class="lima">de Talentos</span></h1>
       <p>Creadores y creadoras que conectan marcas con audiencias reales, en cada categoría y en cada red.</p>
     </div>
     <button class="scroll-cue" onclick="document.getElementById('catViewport').scrollIntoView({behavior:'smooth'})">
-      Explorar por categoría <span class="chev">↓</span>
+      Explorar más <span class="chev">↓</span>
     </button>
   </section>
 
