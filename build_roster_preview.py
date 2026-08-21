@@ -71,10 +71,18 @@ TT_ICON_MINI = '''<svg width="15" height="15" viewBox="4.5 4.5 11 11" fill="none
 <path d="M11.6826 11.5387V7.69501C12.4548 8.22626 13.4026 8.54038 14.4249 8.54038V7.07184C13.8339 6.95183 13.3148 6.64535 12.9314 6.22392C12.3137 5.83829 11.869 5.22023 11.7279 4.5H10.2849L10.2822 12.0776C10.2503 12.9256 9.52076 13.6075 8.62887 13.6075C8.07507 13.6075 7.58785 13.3444 7.28434 12.946C6.75718 12.6778 6.3951 12.1492 6.3951 11.5387C6.3951 10.6628 7.13791 9.95017 8.05111 9.95017C8.2215 9.95017 8.38657 9.97828 8.541 10.0243V8.54293C6.58147 8.5838 5 10.1264 5 12.0189C5 12.9332 5.37008 13.7658 5.97444 14.389C6.56283 14.7849 7.28168 15.0199 8.05377 15.0199C10.0532 15.0199 11.6826 13.4568 11.6826 11.5387Z" fill="white"/>
 </svg>'''
 
+YT_ICON_MINI = '''<svg width="16" height="13" viewBox="4 5 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7,5 H13 A3,3 0 0 1 16,8 V12 A3,3 0 0 1 13,15 H7 A3,3 0 0 1 4,12 V8 A3,3 0 0 1 7,5 Z M9,8.3 L9,11.7 L12.3,10 Z" fill="white"/>
+</svg>'''
+
 def card_html(pid, i):
-    """'Tarjeta Talento — Clean Blur (Chips Abajo)' (Figma node 97:242)."""
+    """'CHIP - v1 gral': IG + TikTok + (YouTube if they have one, else no third chip)."""
     p = people[pid]
     role = " · ".join(p["tags"])
+    third_chip = (
+        f'<a class="bcard-chip" href="{p["yt_url"]}" target="_blank" rel="noopener">{YT_ICON_MINI}<span>{p["yt"]}</span></a>'
+        if p.get("yt") else ""
+    )
     return f'''
     <article class="bcard" style="--i:{i}">
       <img class="bcard-photo" src="{p["photo"]}" alt="{p["name"]}" loading="lazy" decoding="async" width="307" height="527">
@@ -86,7 +94,7 @@ def card_html(pid, i):
       <div class="bcard-bottom">
         <a class="bcard-chip" href="{p["ig_url"]}" target="_blank" rel="noopener">{IG_ICON_MINI}<span>{p["ig"]}</span></a>
         <a class="bcard-chip" href="{p["tt_url"]}" target="_blank" rel="noopener">{TT_ICON_MINI}<span>{p["tt"]}</span></a>
-        <a class="bcard-btn" href="{p["ig_url"]}" target="_blank" rel="noopener">Ver más</a>
+        {third_chip}
       </div>
     </article>'''
 
@@ -96,13 +104,12 @@ def collage_html(ids):
         for i, cid in enumerate(ids)
     )
 
-def category_section(cat, active):
+def category_section(cat):
     slug = cat["slug"]
     head, tail = cat["split"]
     cards = "".join(card_html(pid, i) for i, pid in enumerate(cat["order"]))
-    active_cls = " active-cat" if active else ""
     return f'''
-  <section class="category{active_cls}" data-cat="{cat["name"]}" data-slug="{slug}" id="cat-{slug}">
+  <section class="category" data-cat="{cat["name"]}" data-slug="{slug}" id="cat-{slug}">
     <div class="cat-cover">
       <div class="section-inner">
         <div>
@@ -118,15 +125,19 @@ def category_section(cat, active):
       <div class="rail-head">
         <div class="rail-eyebrow">{len(cat["order"])} creadores en nuestro equipo</div>
       </div>
-      <div class="rail-wrap">
-        <button class="rail-arrow prev" aria-label="Anterior">‹</button>
-        <button class="rail-arrow next" aria-label="Siguiente">›</button>
-        <div class="rail" tabindex="0" role="region" aria-label="Creadores de {cat["name"]}, deslizar con las flechas del teclado">
-          {cards}
+      <div class="rail-pin-spacer">
+        <div class="rail-sticky">
+          <div class="rail-wrap">
+            <button class="rail-arrow prev" aria-label="Anterior">‹</button>
+            <button class="rail-arrow next" aria-label="Siguiente">›</button>
+            <div class="rail" tabindex="0" role="region" aria-label="Creadores de {cat["name"]}, deslizar o scrollear para navegar">
+              {cards}
+            </div>
+          </div>
+          <div class="progress-track">
+            <div class="progress-bar"><div class="progress-fill"></div></div>
+          </div>
         </div>
-      </div>
-      <div class="progress-track">
-        <div class="progress-bar"><div class="progress-fill"></div></div>
       </div>
     </div>
   </section>'''
@@ -143,7 +154,7 @@ font_faces = "\n".join(f'''
 def fondo_svg():
     return f'<svg viewBox="{FONDO_VIEWBOX}" preserveAspectRatio="xMidYMid slice">{FONDO_INNER}</svg>'
 
-sections_html = "\n".join(category_section(cat, active=(i == 0)) for i, cat in enumerate(SECTIONS))
+sections_html = "\n".join(category_section(cat) for cat in SECTIONS)
 slug_map = json.dumps({cat["name"]: cat["slug"] for cat in SECTIONS})
 
 html = f'''<title>BIG Roster 2026</title>
@@ -177,7 +188,7 @@ body {{
 /* ---------- NAV ---------- */
 .nav {{
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center;
   padding: 18px 32px;
 }}
 .nav-brand {{
@@ -186,6 +197,15 @@ body {{
   transition: background .25s ease;
 }}
 .nav-brand:hover {{ background: var(--azul); }}
+
+/* floating tab dock — pinned to the bottom of the screen, always reachable
+   mid-scroll so you can jump straight from Mujeres to Hombres (or back)
+   without scrolling all the way up to a top nav first */
+.tabs-dock {{
+  position: fixed; left: 50%; bottom: 24px; z-index: 100;
+  transform: translateX(-50%);
+  display: flex;
+}}
 .tabs {{ position: relative; display: flex; gap: 4px; }}
 .tab-pill {{
   position: absolute; top: 4px; height: calc(100% - 8px);
@@ -213,7 +233,7 @@ body {{
   outline: 2px solid var(--lima); outline-offset: 3px;
 }}
 
-.section-inner {{ position: relative; z-index: 1; width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 32px; }}
+.section-inner {{ position: relative; z-index: 1; width: 100%; max-width: min(1600px, 90vw); margin: 0 auto; padding: 0 32px; }}
 
 /* ---------- PORTADA ---------- */
 .portada {{
@@ -250,12 +270,7 @@ body {{
 @keyframes bounce {{ 0%,100% {{ transform: translateY(0); }} 50% {{ transform: translateY(5px); }} }}
 
 .cat-viewport {{ position: relative; }}
-.category {{ display: none; }}
-.category.active-cat {{ display: block; }}
-.category.cat-out {{ animation: catOut .25s cubic-bezier(.4,0,1,1) forwards; }}
-.category.cat-in {{ animation: catIn .4s cubic-bezier(.16,1,.3,1); }}
-@keyframes catOut {{ to {{ opacity: 0; transform: translateX(-32px); }} }}
-@keyframes catIn {{ from {{ opacity: 0; transform: translateX(32px); }} to {{ opacity: 1; transform: translateX(0); }} }}
+.category {{ display: block; }}
 
 .cat-cover {{ position: relative; min-height: 92vh; overflow: hidden; display: flex; align-items: center; padding: 120px 0 80px; }}
 .cat-cover .section-inner {{ display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; align-items: center; }}
@@ -272,36 +287,52 @@ body {{
   opacity: 0; transform: translateY(18px);
   animation: riseIn .7s cubic-bezier(.16,1,.3,1) .38s forwards;
 }}
-.cat-collage {{ position: relative; height: 560px; opacity: 0; animation: riseIn .9s cubic-bezier(.16,1,.3,1) .5s forwards; }}
+.cat-collage {{ position: relative; height: 680px; opacity: 0; animation: riseIn .9s cubic-bezier(.16,1,.3,1) .5s forwards; }}
 .collage-tile {{ position: absolute; display: block; border-radius: 32px; width: auto; height: auto; object-fit: cover; object-position: center; }}
-.ct-1 {{ width: 46%; height: 46%; left: 0; top: 4%; }}
-.ct-2 {{ width: 46%; height: 34%; left: 0; bottom: 2%; }}
+.ct-1 {{ width: 40%; height: 47%; left: 0; top: 2%; }}
+.ct-2 {{ width: 40%; height: 47%; left: 0; bottom: 2%; }}
 .ct-3 {{ width: 44%; height: 88%; right: 0; top: 8%; }}
 
-.cat-rail {{ position: relative; overflow: hidden; padding: 40px 0 120px; }}
+.cat-rail {{ position: relative; padding: 40px 0 0; }}
 .rail-head {{
   position: relative; z-index: 1;
-  max-width: 1400px; margin: 0 auto 48px; padding: 0 32px;
+  padding: 0 clamp(24px, 4vw, 64px); margin: 0 0 40px;
   opacity: 0; transform: translateY(20px); transition: opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
 }}
 .rail-head.inview {{ opacity: 1; transform: translateY(0); }}
 .rail-eyebrow {{ color: var(--naranja); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }}
 
-.rail-wrap {{ position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }}
-.rail {{
-  display: flex; gap: 26px; overflow-x: auto; scroll-snap-type: x proximity;
-  padding: 10px 32px 28px; cursor: grab; user-select: none; scrollbar-width: none;
+/* the rail is "pinned" via a tall spacer + position:sticky viewport — vertical
+   scroll through the spacer's extra height drives a horizontal translateX on
+   the rail itself (JS computes progress from the spacer's scroll position),
+   so wheel/trackpad scroll doubles as the carousel's slide gesture */
+.rail-pin-spacer {{ position: relative; }}
+.rail-sticky {{
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; justify-content: center; gap: 20px;
+  overflow: hidden;
 }}
-.rail::-webkit-scrollbar {{ display: none; }}
-.rail.dragging {{ cursor: grabbing; scroll-snap-type: none; }}
+.rail-wrap {{ position: relative; z-index: 1; width: 100%; padding: 0 clamp(24px, 4vw, 64px); }}
+.rail {{
+  display: flex; gap: clamp(18px, 1.6vw, 26px);
+  padding: 10px 0 8px; cursor: grab; user-select: none;
+  will-change: transform;
+}}
+.rail.dragging {{ cursor: grabbing; }}
 
 /* ---------- TARJETA TALENTO — CLEAN BLUR, CHIPS ABAJO (Figma node 97:242) ---------- */
 .bcard {{
-  flex: 0 0 307px; scroll-snap-align: start; position: relative;
-  height: 527px; border-radius: 32px; overflow: hidden; background: #d9d9d9;
+  flex: 0 0 clamp(230px, 17vw, 350px); aspect-ratio: 307 / 527; position: relative;
+  border-radius: 32px; overflow: hidden; background: #d9d9d9;
   transition: transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s cubic-bezier(.16,1,.3,1);
 }}
 .bcard:hover {{ transform: translateY(-6px); box-shadow: 0 22px 44px rgba(13,13,23,.28); }}
+@keyframes cardNudge {{
+  0%, 100% {{ transform: translateX(0); }}
+  32% {{ transform: translateX(16px); }}
+  64% {{ transform: translateX(-8px); }}
+}}
+.bcard.hint-nudge {{ animation: cardNudge 1.7s cubic-bezier(.45,0,.2,1) .1s 1; }}
 .bcard-photo {{
   position: absolute; inset: 0; width: 100%; height: 100%;
   object-fit: cover; object-position: center top; pointer-events: none;
@@ -355,7 +386,7 @@ body {{
 .rail-arrow.prev {{ left: 4px; }}
 .rail-arrow.next {{ right: 4px; }}
 
-.progress-track {{ max-width: 1400px; margin: 8px auto 0; padding: 0 32px; }}
+.progress-track {{ position: relative; z-index: 1; padding: 0 clamp(24px, 4vw, 64px); }}
 .progress-bar {{ height: 3px; background: rgba(51,65,154,.18); border-radius: 3px; overflow: hidden; }}
 .progress-fill {{ height: 100%; width: 25%; background: var(--naranja); border-radius: 3px; transition: width .1s linear; }}
 
@@ -379,11 +410,14 @@ body {{
     <button class="nav-brand" id="navBrand">
       {isotipo_svg(24, "#FFFFFF")}
     </button>
+  </nav>
+
+  <div class="tabs-dock">
     <div class="tabs" id="tabs">
       <div class="tab-pill" id="tabPill"></div>
       {tabs_html()}
     </div>
-  </nav>
+  </div>
 
   <section class="portada" id="portada">
     <div class="section-inner">
@@ -426,72 +460,109 @@ function setActive(cat) {{
 }}
 
 const SLUG_MAP = {slug_map};
-const catViewport = document.getElementById('catViewport');
 const catSections = {{}};
 document.querySelectorAll('.category').forEach(el => {{ catSections[el.dataset.slug] = el; }});
-let activeSlug = Object.keys(catSections).find(s => catSections[s].classList.contains('active-cat')) || null;
-
-const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const CAT_OUT_MS = REDUCE_MOTION ? 0 : 250, CAT_IN_MS = REDUCE_MOTION ? 0 : 400;
-function showCategory(slug) {{
-  const next = catSections[slug];
-  if (!next || slug === activeSlug) return;
-  const current = activeSlug ? catSections[activeSlug] : null;
-  activeSlug = slug;
-  setActive(next.dataset.cat);
-  if (!current) {{
-    next.classList.add('active-cat', 'cat-in');
-    setTimeout(() => next.classList.remove('cat-in'), CAT_IN_MS);
-    return;
-  }}
-  current.classList.add('cat-out');
-  setTimeout(() => {{
-    current.classList.remove('active-cat', 'cat-out');
-    next.classList.add('active-cat', 'cat-in');
-    setTimeout(() => next.classList.remove('cat-in'), CAT_IN_MS);
-  }}, CAT_OUT_MS);
-}}
 
 tabEls.forEach(t => {{
   t.addEventListener('mouseenter', () => movePill(t));
   t.addEventListener('click', () => {{
     const slug = SLUG_MAP[t.dataset.cat];
-    catViewport.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
-    showCategory(slug);
+    catSections[slug].scrollIntoView({{ behavior: 'smooth', block: 'start' }});
   }});
 }});
 tabsEl.addEventListener('mouseleave', () => movePill(currentActive ? tabEls.find(t => t.dataset.cat === currentActive) : null));
 document.getElementById('navBrand').addEventListener('click', () => document.getElementById('portada').scrollIntoView({{ behavior: 'smooth' }}));
 
+// scrollspy: highlight whichever category section (Mujeres / Hombres, both
+// stacked in the same continuous page) currently sits in the viewport centre
 const portadaObserver = new IntersectionObserver((entries) => {{
   entries.forEach(e => {{ if (e.isIntersecting) setActive(null); }});
 }}, {{ rootMargin: '-45% 0px -45% 0px', threshold: 0 }});
 portadaObserver.observe(document.getElementById('portada'));
 
-const viewportObserver = new IntersectionObserver((entries) => {{
-  entries.forEach(e => {{ if (e.isIntersecting && activeSlug) setActive(catSections[activeSlug].dataset.cat); }});
+const sectionObserver = new IntersectionObserver((entries) => {{
+  entries.forEach(e => {{ if (e.isIntersecting) setActive(e.target.dataset.cat); }});
 }}, {{ rootMargin: '-45% 0px -45% 0px', threshold: 0 }});
-viewportObserver.observe(catViewport);
+Object.values(catSections).forEach(el => sectionObserver.observe(el));
 
 window.addEventListener('resize', () => movePill(currentActive ? tabEls.find(t => t.dataset.cat === currentActive) : null));
 
 const io = new IntersectionObserver((entries) => {{
-  entries.forEach(e => {{ if (e.isIntersecting) e.target.classList.add('inview'); }});
+  entries.forEach(e => {{
+    if (!e.isIntersecting) return;
+    e.target.classList.add('inview');
+    // one-shot "invite to slide" nudge on the first couple cards of this rail
+    const rail = e.target.closest('.cat-rail').querySelector('.rail');
+    Array.from(rail.children).slice(0, 2).forEach(c => c.classList.add('hint-nudge'));
+    io.unobserve(e.target);
+  }});
 }}, {{ threshold: .2 }});
 document.querySelectorAll('.rail-head').forEach(el => io.observe(el));
 
-document.querySelectorAll('.cat-rail').forEach(catRail => {{
+// ---------- scroll-pinned horizontal rail ----------
+// each .cat-rail's .rail-pin-spacer is tall enough (100vh + the rail's own
+// overflow width) that, while its .rail-sticky child is pinned via
+// position:sticky, continued vertical wheel/trackpad scroll is translated
+// 1:1 into horizontal progress across the cards — once the spacer's extra
+// height is consumed the section releases and normal page scroll continues
+// into whatever comes next (next category, or the following section).
+const pinRails = Array.from(document.querySelectorAll('.cat-rail')).map(catRail => {{
+  const spacer = catRail.querySelector('.rail-pin-spacer');
+  const sticky = catRail.querySelector('.rail-sticky');
   const rail = catRail.querySelector('.rail');
   const progressFill = catRail.querySelector('.progress-fill');
+  let scrollDistance = 0;
+
+  function measure() {{
+    const trackWidth = rail.scrollWidth;
+    const viewportWidth = sticky.clientWidth;
+    scrollDistance = Math.max(0, trackWidth - viewportWidth);
+    spacer.style.height = (window.innerHeight + scrollDistance) + 'px';
+    update();
+  }}
+  function update() {{
+    const rect = spacer.getBoundingClientRect();
+    const progress = scrollDistance > 0 ? Math.min(1, Math.max(0, -rect.top / scrollDistance)) : 0;
+    rail.style.transform = `translateX(${{-progress * scrollDistance}}px)`;
+    progressFill.style.width = (progress * 100) + '%';
+  }}
+  return {{
+    measure, update,
+    scrollByCards(dir) {{
+      const first = rail.firstElementChild;
+      const gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || '26');
+      const step = (first ? first.getBoundingClientRect().width : 300) + gap;
+      window.scrollBy({{ top: dir * step, behavior: 'smooth' }});
+    }},
+  }};
+}});
+
+function measureAllRails() {{ pinRails.forEach(p => p.measure()); }}
+measureAllRails();
+window.addEventListener('resize', measureAllRails);
+document.querySelectorAll('.bcard-photo').forEach(img => {{
+  if (!img.complete) img.addEventListener('load', measureAllRails, {{ once: true }});
+}});
+
+let scrollTicking = false;
+window.addEventListener('scroll', () => {{
+  if (scrollTicking) return;
+  scrollTicking = true;
+  requestAnimationFrame(() => {{ pinRails.forEach(p => p.update()); scrollTicking = false; }});
+}}, {{ passive: true }});
+
+document.querySelectorAll('.cat-rail').forEach((catRail, idx) => {{
+  const rail = catRail.querySelector('.rail');
   const prevBtn = catRail.querySelector('.rail-arrow.prev');
   const nextBtn = catRail.querySelector('.rail-arrow.next');
+  const pin = pinRails[idx];
 
-  let isDown = false, startX = 0, startScroll = 0, moved = false, pendingDx = 0, rafScheduled = false;
+  let isDown = false, startX = 0, startY = 0, moved = false, pendingDx = 0, rafScheduled = false;
   rail.addEventListener('pointerdown', (e) => {{
     if (e.target.closest('a')) return;
     isDown = true; moved = false;
     rail.classList.add('dragging');
-    startX = e.clientX; startScroll = rail.scrollLeft;
+    startX = e.clientX; startY = window.scrollY;
     rail.setPointerCapture(e.pointerId);
   }});
   rail.addEventListener('pointermove', (e) => {{
@@ -501,7 +572,7 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {{
     if (!rafScheduled) {{
       rafScheduled = true;
       requestAnimationFrame(() => {{
-        rail.scrollLeft = startScroll - pendingDx;
+        window.scrollTo({{ top: startY - pendingDx }});
         rafScheduled = false;
       }});
     }}
@@ -511,17 +582,8 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {{
   );
   rail.addEventListener('click', (e) => {{ if (moved) e.preventDefault(); }}, true);
 
-  function updateProgress() {{
-    const max = rail.scrollWidth - rail.clientWidth;
-    const pct = max > 0 ? (rail.scrollLeft / max) * 100 : 0;
-    progressFill.style.width = pct + '%';
-  }}
-  rail.addEventListener('scroll', updateProgress);
-
-  prevBtn.addEventListener('click', () => rail.scrollBy({{ left: -333, behavior: 'smooth' }}));
-  nextBtn.addEventListener('click', () => rail.scrollBy({{ left: 333, behavior: 'smooth' }}));
-
-  updateProgress();
+  prevBtn.addEventListener('click', () => pin.scrollByCards(-1));
+  nextBtn.addEventListener('click', () => pin.scrollByCards(1));
 }});
 </script>
 '''
