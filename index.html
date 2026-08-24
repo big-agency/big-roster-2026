@@ -164,6 +164,14 @@ body {
 .ct-1 { width: 40%; height: 47%; left: 0; top: 2%; }
 .ct-2 { width: 40%; height: 47%; left: 0; bottom: 2%; }
 .ct-3 { width: 44%; height: 88%; right: 0; top: 8%; }
+#cat-hombres .ct-3 { object-position: 30% center; }
+
+/* 4-photo collage: a staggered 2x2 (right column dropped lower than the
+   left) instead of a rigid grid, so it doesn't read as too static */
+.cat-collage.collage-4 .ct-1 { width: 40%; height: 43%; left: 0; top: 2%; }
+.cat-collage.collage-4 .ct-2 { width: 40%; height: 43%; left: 0; top: 47%; }
+.cat-collage.collage-4 .ct-3 { width: 40%; height: 43%; right: 0; left: auto; top: 8%; }
+.ct-4 { width: 40%; height: 43%; right: 0; top: 53%; }
 
 .cat-rail { position: relative; padding: 40px 0 0; }
 .rail-head {
@@ -313,10 +321,9 @@ body {
       <div class="section-inner">
         <div>
           <h1>Mujeres</h1>
-          <p>Moda, humor y estilo de vida — las creadoras que más conectan con sus audiencias en cada plataforma.</p>
         </div>
-        <div class="cat-collage">
-          <img class="collage-tile ct-1" src="assets/photos/juli_savioli.webp" alt="Juli Savioli" loading="lazy" decoding="async"><img class="collage-tile ct-2" src="assets/photos/pauli_veltrano.webp" alt="Pauli Veltrano" loading="lazy" decoding="async"><img class="collage-tile ct-3" src="assets/photos/sabri_ludmila.webp" alt="Sabri Ludmila" loading="lazy" decoding="async">
+        <div class="cat-collage collage-4">
+          <img class="collage-tile ct-1" src="assets/photos/juli_savioli.webp" alt="Juli Savioli" loading="lazy" decoding="async"><img class="collage-tile ct-2" src="assets/photos/pia_scarnato.webp" alt="Pía Scarnato" loading="lazy" decoding="async"><img class="collage-tile ct-3" src="assets/photos/dulce_pink.webp" alt="Dulce Pink" loading="lazy" decoding="async"><img class="collage-tile ct-4" src="assets/photos/renata_blasevich.webp" alt="Renata Blasevich" loading="lazy" decoding="async">
         </div>
       </div>
     </div>
@@ -714,10 +721,9 @@ body {
       <div class="section-inner">
         <div>
           <h1>Hombres</h1>
-          <p>Carisma, humor y personalidad — los creadores que más conectan con audiencias masivas en cada plataforma.</p>
         </div>
         <div class="cat-collage">
-          <img class="collage-tile ct-1" src="assets/photos/pelao_khe_collage.webp" alt="Pelao Khe" loading="lazy" decoding="async"><img class="collage-tile ct-2" src="assets/photos/pablo_bruschi_collage.webp" alt="Pablo Bruschi" loading="lazy" decoding="async"><img class="collage-tile ct-3" src="assets/photos/benja_calero_collage.webp" alt="Benja Calero" loading="lazy" decoding="async">
+          <img class="collage-tile ct-1" src="assets/photos/pelao_khe_collage.webp" alt="Pelao Khe" loading="lazy" decoding="async"><img class="collage-tile ct-2" src="assets/photos/benja_calero_collage.webp" alt="Benja Calero" loading="lazy" decoding="async"><img class="collage-tile ct-3" src="assets/photos/cris_pierri.webp" alt="Cris Pierri" loading="lazy" decoding="async">
         </div>
       </div>
     </div>

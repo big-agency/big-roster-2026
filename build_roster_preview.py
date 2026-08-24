@@ -31,16 +31,14 @@ CATEGORIES = ["Mujeres", "Hombres"]
 SECTIONS = [
     dict(
         slug="mujeres", name="Mujeres", split=("Muje", "res"),
-        subtitle="Moda, humor y estilo de vida — las creadoras que más conectan con sus audiencias en cada plataforma.",
-        collage=["juli_savioli", "pauli_veltrano", "sabri_ludmila"],
+        collage=["juli_savioli", "pia_scarnato", "dulce_pink", "renata_blasevich"],
         order=["juli_savioli", "pia_scarnato", "dulce_pink", "renata_blasevich", "giuli_bellicoso",
                "pauli_veltrano", "agustina_cambra", "eve_vidal", "inez", "mumy",
                "giuli_lourdes", "mely_francano", "martu_morales", "nanu_yael", "sabri_ludmila", "yo_soy_brisa"],
     ),
     dict(
         slug="hombres", name="Hombres", split=("Hom", "bres"),
-        subtitle="Carisma, humor y personalidad — los creadores que más conectan con audiencias masivas en cada plataforma.",
-        collage=["pelao_khe_collage", "pablo_bruschi_collage", "benja_calero_collage"],
+        collage=["pelao_khe_collage", "benja_calero_collage", "cris_pierri"],
         order=["pelao_khe", "benja_calero", "tiago_bergallo", "cris_pierri", "hablemos_de_cine",
                "ber_scarnato", "mariano_bondar", "inachomer", "santi_gallo", "pablo_bruschi",
                "joselo_marquez", "bruno_rondini", "lubru_invierte", "los_arias_brothers",
@@ -108,15 +106,15 @@ def category_section(cat):
     slug = cat["slug"]
     head, tail = cat["split"]
     cards = "".join(card_html(pid, i) for i, pid in enumerate(cat["order"]))
+    collage_cls = " collage-4" if len(cat["collage"]) == 4 else ""
     return f'''
   <section class="category" data-cat="{cat["name"]}" data-slug="{slug}" id="cat-{slug}">
     <div class="cat-cover">
       <div class="section-inner">
         <div>
           <h1>{head}{tail}</h1>
-          <p>{cat["subtitle"]}</p>
         </div>
-        <div class="cat-collage">
+        <div class="cat-collage{collage_cls}">
           {collage_html(cat["collage"])}
         </div>
       </div>
@@ -292,6 +290,14 @@ body {{
 .ct-1 {{ width: 40%; height: 47%; left: 0; top: 2%; }}
 .ct-2 {{ width: 40%; height: 47%; left: 0; bottom: 2%; }}
 .ct-3 {{ width: 44%; height: 88%; right: 0; top: 8%; }}
+#cat-hombres .ct-3 {{ object-position: 30% center; }}
+
+/* 4-photo collage: a staggered 2x2 (right column dropped lower than the
+   left) instead of a rigid grid, so it doesn't read as too static */
+.cat-collage.collage-4 .ct-1 {{ width: 40%; height: 43%; left: 0; top: 2%; }}
+.cat-collage.collage-4 .ct-2 {{ width: 40%; height: 43%; left: 0; top: 47%; }}
+.cat-collage.collage-4 .ct-3 {{ width: 40%; height: 43%; right: 0; left: auto; top: 8%; }}
+.ct-4 {{ width: 40%; height: 43%; right: 0; top: 53%; }}
 
 .cat-rail {{ position: relative; padding: 40px 0 0; }}
 .rail-head {{
