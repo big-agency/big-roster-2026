@@ -400,6 +400,21 @@ body {{
   .cat-cover .section-inner {{ grid-template-columns: 1fr; }}
   .cat-collage {{ height: 320px; order: -1; }}
   .portada {{ border-radius: 0 0 32px 32px; }}
+
+  /* the scroll-pinned horizontal rail is a desktop (mouse-wheel) trick —
+     on touch it's replaced by a plain native swipeable row, since dragging
+     a finger sideways to slide cards while also owning page scroll is an
+     awkward, unfamiliar gesture on mobile compared to just swiping */
+  .rail-pin-spacer {{ height: auto !important; }}
+  .rail-sticky {{ position: static !important; height: auto !important; display: block !important; }}
+  .rail-wrap {{ padding: 0; }}
+  .rail {{
+    transform: none !important;
+    overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
+    padding: 4px clamp(24px, 6vw, 40px) 8px;
+  }}
+  .bcard {{ scroll-snap-align: start; }}
+  .rail-arrow, .progress-track {{ display: none; }}
 }}
 
 @media (prefers-reduced-motion: reduce) {{
@@ -566,6 +581,9 @@ document.querySelectorAll('.cat-rail').forEach((catRail, idx) => {{
   let isDown = false, startX = 0, startY = 0, moved = false, pendingDx = 0, rafScheduled = false;
   rail.addEventListener('pointerdown', (e) => {{
     if (e.target.closest('a')) return;
+    // below 860px the rail is a native swipeable row (see mobile media
+    // query) — don't hijack touch drags into the desktop scroll-pin logic
+    if (e.pointerType === 'touch' || !window.matchMedia('(min-width: 861px)').matches) return;
     isDown = true; moved = false;
     rail.classList.add('dragging');
     startX = e.clientX; startY = window.scrollY;
