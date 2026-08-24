@@ -156,7 +156,7 @@ def collage_html(ids):
         for i, cid in enumerate(ids)
     )
 
-def category_section(cat):
+def category_section(cat, collapsible=False):
     slug = cat["slug"]
     head, tail = cat["split"]
     cards = "".join(card_html(pid, i) for i, pid in enumerate(cat["order"]))
@@ -167,14 +167,25 @@ def category_section(cat):
           {collage_html(cat["collage"])}
         </div>''' if has_collage else ""
     inner_cls = "" if has_collage else " no-collage"
+    section_cls = " collapsible" if collapsible else ""
+    # mobile-only accordion toggle — a no-op on desktop (hidden via CSS),
+    # tapping it (or the cat-cover, see JS) expands/collapses the card grid
+    toggle_html = f'''
+      <button class="cat-toggle" aria-expanded="false">
+        <span>{len(cat["order"])} creadores</span>
+        <svg width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1L6.5 6.5L12 1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>''' if collapsible else ""
     return f'''
-  <section class="category" data-cat="{cat["name"]}" data-slug="{slug}" id="cat-{slug}">
+  <section class="category{section_cls}" data-cat="{cat["name"]}" data-slug="{slug}" id="cat-{slug}">
     <div class="cat-cover">
       <div class="section-inner{inner_cls}">
         <div>
           <h1>{head}{tail}</h1>
         </div>{collage_block}
       </div>
+      {toggle_html}
     </div>
     <div class="cat-rail">
       <div class="rail-head">
@@ -207,7 +218,10 @@ font_faces = "\n".join(f'''
 def fondo_svg():
     return f'<svg viewBox="{FONDO_VIEWBOX}" preserveAspectRatio="xMidYMid slice">{FONDO_INNER}</svg>'
 
-sections_html = "\n".join(category_section(cat) for cat in ALL_SECTIONS)
+sections_html = (
+    "\n".join(category_section(cat) for cat in SECTIONS)
+    + "\n" + "\n".join(category_section(cat, collapsible=True) for cat in CATEGORY_SECTIONS)
+)
 slug_map = json.dumps({cat["name"]: cat["slug"] for cat in ALL_SECTIONS})
 category_slugs_json = json.dumps([cat["slug"] for cat in CATEGORY_SECTIONS])
 cat_menu_links = "\n".join(
@@ -496,24 +510,58 @@ body {{
 .progress-bar {{ height: 3px; background: rgba(51,65,154,.18); border-radius: 3px; overflow: hidden; }}
 .progress-fill {{ height: 100%; width: 25%; background: var(--naranja); border-radius: 3px; transition: width .1s linear; }}
 
+.cat-toggle {{ display: none; }}
+
 @media (max-width: 860px) {{
+  .cat-cover {{ min-height: 0; padding: 56px 0 20px; }}
   .cat-cover .section-inner {{ grid-template-columns: 1fr; }}
-  .cat-collage {{ height: 320px; order: -1; }}
+  .cat-cover h1, .section-inner.no-collage h1 {{ font-size: clamp(38px, 13vw, 64px); }}
+  .cat-collage {{ height: 280px; order: -1; }}
   .portada {{ border-radius: 0 0 32px 32px; }}
 
-  /* the scroll-pinned horizontal rail is a desktop (mouse-wheel) trick —
-     on touch it's replaced by a plain native swipeable row, since dragging
-     a finger sideways to slide cards while also owning page scroll is an
-     awkward, unfamiliar gesture on mobile compared to just swiping */
+  /* the 8 secondary (PDF) categories collapse into a tappable accordion row
+     so the page reads as a short scannable list first — Mujeres/Hombres stay
+     open since they're the two primary sections */
+  .category.collapsible .cat-cover {{
+    flex-direction: column; align-items: stretch;
+    padding-bottom: 0; cursor: pointer;
+  }}
+  .category.collapsible .rail-head {{ display: none; }}
+  .category.collapsible .cat-rail {{ padding-top: 0; }}
+  .cat-toggle {{
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    width: 100%; margin-top: 22px; padding: 16px 4px;
+    background: none; border: none; border-top: 1.5px solid rgba(243,111,44,.3);
+    color: var(--naranja); font-family: inherit; font-weight: 700; font-size: 13px;
+    letter-spacing: .04em; text-transform: uppercase; cursor: pointer;
+  }}
+  .cat-toggle svg {{ transition: transform .3s ease; flex-shrink: 0; }}
+  .category.collapsible.open .cat-toggle svg {{ transform: rotate(180deg); }}
+  .category.collapsible .cat-rail {{
+    max-height: 0; overflow: hidden; padding-top: 0;
+    transition: max-height .4s cubic-bezier(.4,0,.2,1);
+  }}
+
+  /* the scroll-pinned horizontal rail is a desktop (mouse-wheel/trackpad)
+     trick — on touch it's a native swipeable, snap-to-card row instead,
+     full-bleed with overlaid arrow buttons (one card in view at a time) */
   .rail-viewport {{ height: auto !important; display: block !important; }}
-  .rail-wrap {{ padding: 0; }}
+  .rail-wrap {{ padding: 0 22px; }}
   .rail {{
     transform: none !important;
-    overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
-    padding: 4px clamp(24px, 6vw, 40px) 8px;
+    overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    padding: 4px 0 8px; gap: 14px;
   }}
-  .bcard {{ scroll-snap-align: start; }}
-  .rail-arrow, .progress-track {{ display: none; }}
+  .bcard {{ flex: 0 0 min(82vw, 420px); scroll-snap-align: center; }}
+  .progress-track {{ display: none; }}
+  .rail-arrow {{
+    display: flex; width: 38px; height: 38px; top: 45%;
+    background: rgba(13,13,23,.4); color: var(--blanco);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  }}
+  .rail-arrow:hover {{ background: rgba(13,13,23,.6); }}
+  .rail-arrow.prev {{ left: 10px; }}
+  .rail-arrow.next {{ right: 10px; }}
 }}
 
 @media (prefers-reduced-motion: reduce) {{
@@ -602,6 +650,42 @@ function setActive(cat) {{
 const catSections = {{}};
 document.querySelectorAll('.category').forEach(el => {{ catSections[el.dataset.slug] = el; }});
 
+// ---------- mobile accordion (secondary/PDF categories only) ----------
+const MOBILE_QUERY = window.matchMedia('(max-width: 860px)');
+
+function openCategory(section) {{
+  if (!section.classList.contains('collapsible') || section.classList.contains('open')) return;
+  const railEl = section.querySelector('.cat-rail');
+  const toggle = section.querySelector('.cat-toggle');
+  section.classList.add('open');
+  toggle.setAttribute('aria-expanded', 'true');
+  railEl.style.maxHeight = railEl.scrollHeight + 'px';
+}}
+function closeCategory(section) {{
+  const railEl = section.querySelector('.cat-rail');
+  const toggle = section.querySelector('.cat-toggle');
+  section.classList.remove('open');
+  toggle.setAttribute('aria-expanded', 'false');
+  railEl.style.maxHeight = '0px';
+}}
+function syncAccordionState() {{
+  document.querySelectorAll('.category.collapsible').forEach(section => {{
+    const railEl = section.querySelector('.cat-rail');
+    if (!MOBILE_QUERY.matches) {{ railEl.style.maxHeight = ''; return; }}
+    railEl.style.maxHeight = section.classList.contains('open') ? railEl.scrollHeight + 'px' : '0px';
+  }});
+}}
+syncAccordionState();
+MOBILE_QUERY.addEventListener('change', syncAccordionState);
+window.addEventListener('resize', () => {{ if (MOBILE_QUERY.matches) syncAccordionState(); }});
+
+document.querySelectorAll('.category.collapsible .cat-toggle').forEach(toggle => {{
+  toggle.addEventListener('click', () => {{
+    const section = toggle.closest('.category');
+    section.classList.contains('open') ? closeCategory(section) : openCategory(section);
+  }});
+}});
+
 tabEls.forEach(t => {{
   t.addEventListener('mouseenter', () => movePill(t));
   t.addEventListener('click', () => {{
@@ -619,7 +703,9 @@ catMenuBtn.addEventListener('click', () => {{
 catMenuLinks.forEach(link => {{
   link.addEventListener('click', (e) => {{
     e.preventDefault();
-    catSections[link.dataset.slug].scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+    const section = catSections[link.dataset.slug];
+    if (MOBILE_QUERY.matches) openCategory(section);
+    section.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
     catMenu.classList.remove('open');
     catMenuBtn.setAttribute('aria-expanded', 'false');
   }});
@@ -756,7 +842,12 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {{
     const first = rail.firstElementChild;
     const gap = parseFloat(getComputedStyle(rail).columnGap || getComputedStyle(rail).gap || '26');
     const step = (first ? first.getBoundingClientRect().width : 300) + gap;
-    nudge(dir * step);
+    if (isDesktop()) {{
+      nudge(dir * step);
+    }} else {{
+      // mobile rail is native overflow-x scroll, not transform-driven
+      rail.scrollBy({{ left: dir * step, behavior: 'smooth' }});
+    }}
   }}
   prevBtn.addEventListener('click', () => scrollByCards(-1));
   nextBtn.addEventListener('click', () => scrollByCards(1));
