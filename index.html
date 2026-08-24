@@ -3861,6 +3861,7 @@ const HOVER_SLIDE_SPEED = 4.5; // px per animation frame while parked on an edge
 
 document.querySelectorAll('.cat-rail').forEach(catRail => {
   const viewport = catRail.querySelector('.rail-viewport');
+  const wrap = catRail.querySelector('.rail-wrap');
   const rail = catRail.querySelector('.rail');
   const progressFill = catRail.querySelector('.progress-fill');
   const prevBtn = catRail.querySelector('.rail-arrow.prev');
@@ -3874,7 +3875,12 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {
   function isDesktop() { return window.matchMedia('(min-width: 861px)').matches; }
 
   function measure() {
-    maxDistance = Math.max(0, rail.scrollWidth - viewport.clientWidth);
+    // .rail itself has no padding — the left/right inset lives on .rail-wrap
+    // — so it has to be added back in, otherwise the carousel stops short
+    // and the last card's far edge gets clipped by the viewport's overflow
+    const wrapStyle = getComputedStyle(wrap);
+    const padX = (parseFloat(wrapStyle.paddingLeft) || 0) + (parseFloat(wrapStyle.paddingRight) || 0);
+    maxDistance = Math.max(0, rail.scrollWidth + padX - viewport.clientWidth);
     progress = Math.min(1, progress);
     update();
   }
