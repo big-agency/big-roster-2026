@@ -531,7 +531,7 @@ body {{
   .category.collapsible .cat-rail {{ padding-top: 0; }}
   .cat-toggle {{
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    width: 100%; margin-top: 22px; padding: 16px 4px;
+    width: 100%; margin-top: 22px; padding: 16px 32px;
     background: none; border: none; border-top: 1.5px solid rgba(243,111,44,.3);
     color: var(--naranja); font-family: inherit; font-weight: 700; font-size: 13px;
     letter-spacing: .04em; text-transform: uppercase; cursor: pointer;
