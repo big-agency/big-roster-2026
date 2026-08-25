@@ -4030,11 +4030,18 @@ document.querySelectorAll('.cat-rail').forEach(catRail => {
   }
   viewport.addEventListener('mousemove', (e) => {
     if (!isDesktop() || maxDistance <= 0) return;
+    // only the card sitting right at the left/right edge triggers auto-slide —
+    // every other card in the middle is a dead zone so it stays clickable
     const rect = viewport.getBoundingClientRect();
-    const dir = (e.clientX - rect.left) < rect.width / 2 ? -1 : 1;
+    const first = rail.firstElementChild;
+    const edgeZone = first ? first.getBoundingClientRect().width : 100;
+    const x = e.clientX - rect.left;
+    let dir = 0;
+    if (x < edgeZone) dir = -1;
+    else if (x > rect.width - edgeZone) dir = 1;
     if (dir !== hoverDir) {
       hoverDir = dir;
-      if (!hoverRafId) hoverRafId = setInterval(hoverStep, 16);
+      if (dir !== 0 && !hoverRafId) hoverRafId = setInterval(hoverStep, 16);
     }
   });
   viewport.addEventListener('mouseleave', () => { hoverDir = 0; });
