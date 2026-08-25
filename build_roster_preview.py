@@ -229,7 +229,8 @@ cat_menu_links = "\n".join(
     for cat in CATEGORY_SECTIONS
 )
 
-html = f'''<title>BIG Roster 2026</title>
+html = f'''<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BIG Roster 2026</title>
 <style>
 {font_faces}
 
